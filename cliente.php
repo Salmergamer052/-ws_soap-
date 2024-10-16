@@ -21,8 +21,9 @@ try{
     $arreglo = array();
 
     foreach($respuestas as $respuesta){
-        $arreglo[]['departamento'] = array(
-            "id"=> $respuesta["departamento"]
+        $arreglo[]["departamento"] = array(
+            "id"=> $respuesta["id"],
+            "nombre" => $respuesta["departamento"]
         );
     }
     $arr_headers = getallheaders();
@@ -32,7 +33,7 @@ try{
         echo($documento);   
     }elseif($arr_headers["Accept"] == "aplication/json"){
         header("Content-Type: Application/json");
-        echo(json_decode($respuestas));
+        echo(json_encode($respuestas));
 
     }else{
         echo("ESPECIFIQUE EL FORMATO DE DATOS QUE USTED ESPERA");
