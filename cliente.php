@@ -2,45 +2,42 @@
 include("funciones.inc.php");
 try {
     $opciones = array(
-        'location' => 'http://localhost/ws_soap/server.php',
-        'uri' => 'urn:departamento',
-        'trace' => true 
+        'location'=>'http://localhost/ws_soap/server.php',
+        'uri'=>'urn:departamento',
+        'trace' => true
     );
 
-    $client = new SoapClient(null, $opciones);
-
-    if (isset($_GET["idz"])) {
-        $idz = intval($_GET["idz"]);
+    $client= new SoapClient(null,$opciones);
+    if (isset($GET["idz"])) {
+        $idz = intval($GET["idz"]);
         if ($idz > 0) {
             $respuestas = $client->obtenerDepartamentosPorZona($idz);
         }
-    } else {
+    }else {
         $respuestas = $client->obtenerDepartamentos();
         var_dump($respuestas);
     }
 
     $arreglo = array();
-    foreach ($respuestas as $respuesta) {
-        $arreglo[]['departamento'] = array(
+
+    foreach($respuestas as $respuesta){
+        $arreglo[]["departamento"] = array(
             "id" => $respuesta["id"],
             "nombre" => $respuesta["departamento"]
         );
     }
-
     $arr_headers = getallheaders();
-
     if ($arr_headers["Accept"] == "application/xml") {
-        $documento = creaxml("departamento", $arreglo);
-        header("Content-Type: application/xml");
-        echo($documento);   
-    } elseif ($arr_headers["Accept"] == "application/json") {
-        header("Content-Type: application/json");
+        $documento = creaxml("departamento",$arreglo);
+        header("Content-Type: Application/xml");
+        echo($documento);
+    }elseif($arr_headers["Accept"] == "application/json"){
+        header("Content-Type: Application/json");
         echo(json_encode($respuestas));
-    } else {
+    }else{
         echo("ESPECIFIQUE EL FORMATO DE DATOS QUE USTED ESPERA");
     }
-}
-catch (Exception $e) {
-    echo('Error: '.$e->getMessage());
+} catch (Exception $e) {
+    echo('Error:' .$e->getMessage());
 }
 ?>
